@@ -6,8 +6,6 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 
 @Configuration
@@ -18,6 +16,8 @@ public class WebAppConfig implements WebMvcConfigurer {
     private InterceptorConfig interceptorConfig;
     @Autowired
     private InterceptorConfigTwo interceptorConfigTwo;
+    @Autowired
+    private InterceptorConfigWeb interceptorConfigWeb;
 
 
     // 这个方法是用来配置静态资源的，比如html，js，css，等等
@@ -31,8 +31,13 @@ public class WebAppConfig implements WebMvcConfigurer {
         // addPathPatterns("/**") 表示拦截所有的请求，
         // excludePathPatterns("/login", "/register") 表示除了登陆与注册之外，因为登陆注册不需要登陆也可以访问
         //registry.addInterceptor(interceptorConfig).addPathPatterns("admin/**").excludePathPatterns("/login", "/register");
-        registry.addInterceptor(interceptorConfig).addPathPatterns("/admin/**");
-        registry.addInterceptor(interceptorConfigTwo).addPathPatterns("/admin/root/**");
+        registry.addInterceptor(interceptorConfigWeb).addPathPatterns("/**")
+                .excludePathPatterns("/static/**","/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg",
+                                        "/**/*.jpeg", "/**/*.gif", "/**/fonts/*", "/**/*.svg","/**/*.*",
+                        "/clientupimg/**","/clientupurlimg/**","/clientlogin/**","/notices/**","/systemupdate/**","/getdomain/**",
+                        "/getNoticeText/**","/getNotice/**","/addalbum/**","/addalbum/**","/SaveForAlbum/**","/TOALBUM*N/**","/TOALBUM*N/**");
+        registry.addInterceptor(interceptorConfig).addPathPatterns("/admin/**").excludePathPatterns("/**/*.*");
+        registry.addInterceptor(interceptorConfigTwo).addPathPatterns("/admin/root/**").excludePathPatterns("/**/*.*");
 
 
 
